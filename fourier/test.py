@@ -61,8 +61,8 @@ with torch.no_grad():
             plt.imshow(x[i,:,:,0]*1e3)
             plt.colorbar()
     
-            plt.title('u (m/a)')
             plt.subplot(4,2,3)
+            plt.title('u (m/a)')
             plt.imshow(y[i,:,:,0])
             plt.colorbar()
 
@@ -70,25 +70,26 @@ with torch.no_grad():
             plt.title('u emulator (m/a)')
             plt.imshow(out[i,:,:,0])
             plt.colorbar()
-
-            plt.title('v (m/a)')
+            
             plt.subplot(4,2,5)
+            plt.title('v (m/a)')
             plt.imshow(y[i,:,:,1])
             plt.colorbar()
 
-            plt.title('v emulator (m/a)')
             plt.subplot(4,2,6)
+            plt.title('v emulator (m/a)')
             plt.imshow(out[i,:,:,1])
             plt.colorbar()
 
-            plt.title('u mismatch (m/a)')
             plt.subplot(4,2,7)
+            plt.title('u mismatch (m/a)')
             plt.imshow(y[i,:,:,0] - out[i,:,:,0])
             plt.colorbar()
 
-            plt.title('v mismatch (m/a)')            
+
             plt.subplot(4,2,8)
-            plt.imshow(y[i,:,:,1] - out[i,:,:,1], vmin = -25., vmax = 25.)
+            plt.title('v mismatch (m/a)')            
+            plt.imshow(y[i,:,:,1] - out[i,:,:,1], vmin = -50., vmax = 50.)
             plt.colorbar()
             
             plt.show()
