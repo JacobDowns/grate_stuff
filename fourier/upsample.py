@@ -44,21 +44,15 @@ test_l2 = 0.0
 with torch.no_grad():
      
     for x, y in test_loader:
-        #x, y = x.cuda(), y.cuda()
 
-        x = scipy.ndimage.zoom(x, zoom = (1,2,2,1), order=1)[0:5]
-        y = scipy.ndimage.zoom(y, zoom = (1,2,2,1), order=1)[0:5]
+        x = scipy.ndimage.zoom(x, zoom = (1,2,2,1), order=1)[0:2]
+        y = scipy.ndimage.zoom(y, zoom = (1,2,2,1), order=1)[0:2]
         x = torch.tensor(x)
         y = torch.tensor(y)
 
 
         x, y = x.cuda(), y.cuda()
-        print(x.shape)
-        #x = x[:,::1,::1,:]
-        #y = y[:,::1,::1,:]
-
-        #x 
-
+    
         
         out = model(x)
         out = y_normalizer.decode(out)        
@@ -70,42 +64,19 @@ with torch.no_grad():
 
         test_l2 += myloss(out.reshape(out.shape[0],-1), y.reshape(out.shape[0],-1)).item()
 
+        cmap = plt.get_cmap('viridis', 24)
 
         for i in range(x.shape[0]):
-            plt.subplot(4,2,1)
-            plt.title('Ice Thickness (m)')
-            plt.imshow(x[i,:,:,0]*1e3)
-            plt.colorbar()
-    
-            plt.subplot(4,2,3)
+            plt.subplot(2,1,1)
             plt.title('u (m/a)')
-            plt.imshow(y[i,:,:,0])
+            plt.imshow(y[i,:,:,0], vmin = y[i,:,:,0].min(), vmax = y[i,:,:,0].max(), cmap = cmap)
             plt.colorbar()
 
-            plt.subplot(4,2,4)
+            plt.subplot(2,1,2)
             plt.title('u emulator (m/a)')
-            plt.imshow(out[i,:,:,0])
-            plt.colorbar()
-            
-            plt.subplot(4,2,5)
-            plt.title('v (m/a)')
-            plt.imshow(y[i,:,:,1])
-            plt.colorbar()
+            plt.imshow(out[i,:,:,0],  vmin = y[i,:,:,0].min(), vmax = y[i,:,:,0].max(), cmap = cmap)
+            #plt.imshow(out[i,:,:,0] - y[i,:,:,0], cmap = cmap)
 
-            plt.subplot(4,2,6)
-            plt.title('v emulator (m/a)')
-            plt.imshow(out[i,:,:,1])
-            plt.colorbar()
-
-            plt.subplot(4,2,7)
-            plt.title('u mismatch (m/a)')
-            plt.imshow(y[i,:,:,0] - out[i,:,:,0])
-            plt.colorbar()
-
-
-            plt.subplot(4,2,8)
-            plt.title('v mismatch (m/a)')            
-            plt.imshow(y[i,:,:,1] - out[i,:,:,1], vmin = -50., vmax = 50.)
             plt.colorbar()
 
             plt.tight_layout()

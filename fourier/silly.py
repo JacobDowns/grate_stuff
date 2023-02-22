@@ -6,7 +6,6 @@ from timeit import default_timer
 from fourier_neural_operator import FNO2d
 from utilities import DataNormalizer, LpLoss
 import random
-import scipy.ndimage
 
 X = np.load('data/X_test.npy')
 Y = np.load('data/Y_test.npy')
@@ -44,22 +43,8 @@ test_l2 = 0.0
 with torch.no_grad():
      
     for x, y in test_loader:
-        #x, y = x.cuda(), y.cuda()
-
-        x = scipy.ndimage.zoom(x, zoom = (1,2,2,1), order=1)[0:5]
-        y = scipy.ndimage.zoom(y, zoom = (1,2,2,1), order=1)[0:5]
-        x = torch.tensor(x)
-        y = torch.tensor(y)
-
-
         x, y = x.cuda(), y.cuda()
-        print(x.shape)
-        #x = x[:,::1,::1,:]
-        #y = y[:,::1,::1,:]
 
-        #x 
-
-        
         out = model(x)
         out = y_normalizer.decode(out)        
         y = y_normalizer.decode(y)
@@ -69,7 +54,6 @@ with torch.no_grad():
         y  = y.cpu()
 
         test_l2 += myloss(out.reshape(out.shape[0],-1), y.reshape(out.shape[0],-1)).item()
-
 
         for i in range(x.shape[0]):
             plt.subplot(4,2,1)
@@ -107,10 +91,8 @@ with torch.no_grad():
             plt.title('v mismatch (m/a)')            
             plt.imshow(y[i,:,:,1] - out[i,:,:,1], vmin = -50., vmax = 50.)
             plt.colorbar()
-
-            plt.tight_layout()
+            
             plt.show()
-            quit()
 
     test_l2 /= ntest
     print(test_l2)

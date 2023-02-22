@@ -108,7 +108,7 @@ class FNO2d(nn.Module):
 
         x1 = self.conv0(x)
         x1 = self.mlp0(x1)
-        x2 = self.w0(x)
+        x2 = self.w0(x) 
         x = x1 + x2
         x = F.gelu(x)
 

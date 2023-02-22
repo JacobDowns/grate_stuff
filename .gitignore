@@ -162,3 +162,5 @@ cython_debug/
 *.py~
 
 fourier/data/*
+graph_neural/data/*
+graph_neural/checkpoint/*

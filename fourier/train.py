@@ -84,6 +84,8 @@ for ep in range(epochs):
 
         batch_size = x.shape[0]
         out = model(x)
+
+        quit()
         out = y_normalizer.decode(out)        
         y = y_normalizer.decode(y)
         
@@ -126,4 +128,4 @@ for ep in range(epochs):
     print(ep, t2-t1, train_l2, test_l2)
 
 # Save the trained model parameters
-torch.save(model.state_dict(), 'data/state.pt')
+#torch.save(model.state_dict(), 'data/state.pt')
