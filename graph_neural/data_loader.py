@@ -137,5 +137,5 @@ class GraphDataLoader(object):
             data_j.edge_attr = self.x_edge_normalizer.encode(data_j.edge_attr)
 
             # Limit the size  of included data
-            if data_j.x.shape[0] < 60000:
+            if data_j.x.shape[0] < 80000:
                 self.data.append(data_j)

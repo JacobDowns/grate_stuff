@@ -31,6 +31,7 @@ class Simulator(nn.Module):
         if ckpdir is None:
             ckpdir = self.model_dir
         dicts = torch.load(ckpdir)
+        print(dicts)
         self.load_state_dict(dicts['model'])
 
         keys = list(dicts.keys())
